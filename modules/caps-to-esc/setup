@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# caps-to-esc setup: remap capslock to escape on macOS via hidutil
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  return 0
+fi
+
+# Apply remap immediately
+hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x700000029}]}' >/dev/null
+
+# Symlink LaunchAgent plist so the remap persists across reboots
+local plist_src="${BASH_SOURCE[0]%/*}/com.local.caps-to-esc.plist"
+local plist_dst="$HOME/Library/LaunchAgents/com.local.caps-to-esc.plist"
+
+mkdir -p "$HOME/Library/LaunchAgents"
+
+if [[ -L "$plist_dst" ]]; then
+  local current
+  current="$(readlink "$plist_dst")"
+  if [[ "$current" == "$plist_src" ]]; then
+    return 0
+  fi
+  rm "$plist_dst"
+elif [[ -e "$plist_dst" ]]; then
+  warn "caps-to-esc: $plist_dst exists and is not a symlink, skipping"
+  return 0
+fi
+
+ln -s "$plist_src" "$plist_dst"
+log "caps-to-esc: linked LaunchAgent plist"

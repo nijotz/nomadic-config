@@ -1,0 +1,48 @@
+settitle() {
+  printf "\033k%s\033\\" "$1"
+}
+
+# Extract a display name from ssh/mosh arguments for the tmux window title.
+# Strips flags, drops the user@ if it matches $USER, and removes the last
+# domain component (e.g. host.example.com -> host.example).
+parse_host() {
+  local arg display=""
+  shift  # drop the command name (ssh/mosh)
+  for arg in "$@"; do
+    case "$arg" in
+      -p|-i|-o|-l|-J|-F) shift ;; # flag with a value — skip next arg too
+      -*)                ;;        # other flags — skip
+      *)  display="$arg"; break ;; # first non-flag is the destination
+    esac
+    shift
+  done
+
+  [[ -z "$display" ]] && return
+
+  # strip user@ if it matches current user
+  display="${display/#${USER}@/}"
+
+  # drop last domain component (host.example.com -> host.example, example.com -> example)
+  if [[ "$display" == *.* ]]; then
+    display="${display%.*}"
+  fi
+
+  printf '%s' "$display"
+}
+
+# Wrap remote shell commands to set the tmux window title to the hostname
+remote_shell_wrapper() {
+  local title
+  title="$(parse_host "$@")"
+
+  [[ -n "$title" ]] && settitle "$title"
+  command "$@"
+}
+
+ssh() {
+  remote_shell_wrapper ssh "$@"
+}
+
+mosh() {
+  remote_shell_wrapper mosh "$@"
+}

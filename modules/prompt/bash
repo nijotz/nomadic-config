@@ -1,0 +1,23 @@
+print_pre_prompt() {
+  local hms
+  read -r hms < <(date +"%H %M %S")
+  hextime=$(printf '0x%02X:%02X:%02X' ${hms})
+  virtualenv="${VIRTUAL_ENV:+(${VIRTUAL_ENV##*/})}"
+
+  # Color escape codes
+  local r='\[\e[31m\]' g='\[\e[32m\]' y='\[\e[33m\]'
+  local m='\[\e[35m\]' c='\[\e[36m\]' w='\[\e[37m\]'
+  local bl='\[\e[34m\]' n='\[\e[0m\]'
+
+  local histnum="${r}\!"
+  local time="${y}\${hextime}"
+  local user="${m}\u"
+  local host="${bl}\h"
+  local venv="${w}\${virtualenv}"
+  local dir="${c}\w"
+  local prompt="${g}\$"
+
+  PS1="${g}[${histnum}${time}${user}${g}@${host}${venv}${dir}${g}]${prompt}${n} "
+}
+
+PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND}; }print_pre_prompt"

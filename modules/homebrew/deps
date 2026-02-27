@@ -1,0 +1,2 @@
+cmd: brew
+pkg: bash bash-completion@2

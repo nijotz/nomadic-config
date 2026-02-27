@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+brew_prefix=$(brew --prefix)
+
+if [[ -r "$brew_prefix/etc/profile.d/bash_completion.sh" ]]; then
+  echo "source $brew_prefix/etc/profile.d/bash_completion.sh"
+else
+  cat << EOF
+    for COMPLETION in "$brew_prefix/etc/bash_completion.d/"*
+    do
+      [[ -r "\${COMPLETION}" ]] && source "\${COMPLETION}"
+    done
+EOF
+fi
+
+# Run at apply time so the output is baked into the rc file,
+# rather than running brew shellenv on every shell startup.
+brew shellenv

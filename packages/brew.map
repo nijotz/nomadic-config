@@ -1,0 +1,5 @@
+# Homebrew name overrides
+# Use cask: prefix for GUI apps installed via `brew install --cask`
+iterm2=cask:iterm2
+scroll-reverser=cask:scroll-reverser
+alt-tab=cask:alt-tab

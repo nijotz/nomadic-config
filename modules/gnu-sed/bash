@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+brew_prefix=$(brew --prefix)
+
+cat << EOF
+# I don't want to have to type 'gsed'
+export PATH=$brew_prefix/opt/gnu-sed/libexec/gnubin:\$PATH
+
+# Need the man pages for the GNU sed
+export MANPATH=$brew_prefix/opt/gnu-sed/libexec/gnuman:\$MANPATH
+EOF

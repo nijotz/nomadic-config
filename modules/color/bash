@@ -1,0 +1,10 @@
+alias grep='grep --color=auto'
+if ls --color=auto / &>/dev/null; then
+  alias ls='ls --color=auto'
+elif ls -G / &>/dev/null; then
+  alias ls='ls -G'
+fi
+if diff --color=auto /dev/null /dev/null &>/dev/null; then
+  alias diff='diff --color=auto'
+fi
+export LESS='-R'

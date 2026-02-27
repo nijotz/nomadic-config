@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+brew_prefix=$(brew --prefix)
+
+cat << EOF
+# I'm used to the GNU version of utils
+export PATH=$brew_prefix/opt/coreutils/libexec/gnubin:\$PATH
+
+# Need the man pages for the GNU coreutils
+export MANPATH=$brew_prefix/opt/coreutils/libexec/gnuman:\$MANPATH
+EOF
