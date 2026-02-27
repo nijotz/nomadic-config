@@ -1,6 +1,6 @@
 print_pre_prompt() {
   local hms
-  read -r hms < <(date +"%H %M %S")
+  read -r hms < <(date +"%-H %-M %-S")
   hextime=$(printf '0x%02X:%02X:%02X' ${hms})
   virtualenv="${VIRTUAL_ENV:+(${VIRTUAL_ENV##*/})}"
 
