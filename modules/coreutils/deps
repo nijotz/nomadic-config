@@ -1,4 +1,4 @@
 after: homebrew
 cmd: brew
 os: macos
-pkg: coreutils
+pkg: coreutils util-linux
