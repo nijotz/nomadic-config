@@ -46,3 +46,12 @@ ssh() {
 mosh() {
   remote_shell_wrapper mosh "$@"
 }
+
+# Reload SSH agent configs on new shells
+reload_ssh_agent() {
+  eval $(tmux show-environment -s SSH_AUTH_SOCK 2>/dev/null)
+}
+
+if [ -n "${TMUX:-}" ]; then
+  reload_ssh_agent
+fi
