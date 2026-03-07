@@ -1,3 +1,2 @@
 after: homebrew
-cmd: brew
 os: macos

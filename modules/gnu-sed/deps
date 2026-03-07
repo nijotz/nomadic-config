@@ -1,4 +1,3 @@
 after: homebrew
-cmd: brew
 os: macos
 pkg: gnu-sed
