@@ -1,1 +1,2 @@
-pkg: bash bash-completion@2
+os: macos
+pkg: bash bash-completion
