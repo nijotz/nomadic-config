@@ -6,15 +6,14 @@ settitle() {
 # Strips flags, drops the user@ if it matches $USER, and removes the last
 # domain component (e.g. host.example.com -> host.example).
 parse_host() {
-  local arg display=""
+  local display=""
   shift  # drop the command name (ssh/mosh)
-  for arg in "$@"; do
-    case "$arg" in
-      -p|-i|-o|-l|-J|-F) shift ;; # flag with a value — skip next arg too
-      -*)                ;;        # other flags — skip
-      *)  display="$arg"; break ;; # first non-flag is the destination
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      -p|-i|-o|-l|-J|-F|-L|-R|-D|-W|-b|-c|-e|-m|-Q|-S) shift 2 ;; # flag with a value — skip both
+      -*)  shift ;; # skip other flags
+      *)   display="$1"; break ;; # first non-flag is the destination
     esac
-    shift
   done
 
   [[ -z "$display" ]] && return
