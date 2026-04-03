@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+if [[ ! -f "${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]]; then
+  curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+fi
