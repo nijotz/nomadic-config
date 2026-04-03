@@ -4,6 +4,7 @@
 [color]
     diff = True
     status = auto
+    pagerMode = always
 [push]
     default = current
 [alias]
