@@ -4,7 +4,7 @@ jq
 mosh
 nmap
 pv
-python
+python3
 ripgrep
 uv
 watch
