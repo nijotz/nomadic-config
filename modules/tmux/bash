@@ -35,7 +35,12 @@ remote_shell_wrapper() {
   title="$(parse_host "$@")"
 
   [[ -n "$title" ]] && settitle "$title"
-  command "$@"
+
+  # Re-enable automatic-rename when the session ends, even if killed or crashed
+  (
+    [[ -n "$title" && -n "$TMUX" ]] && trap 'tmux set-window-option automatic-rename on' EXIT
+    command "$@"
+  )
 }
 
 ssh() {
