@@ -22,6 +22,7 @@
 [core]
     editor = nvim
     excludesFile = ~/.config/git/ignore
+    pager = less -FX
 [init]
     defaultBranch = main
 [pull]
