@@ -7,6 +7,7 @@
 [push]
     default = current
 [alias]
+    ds  = diff --staged
     st  = status -sb
     me  = log --author=Nick
     lg  = log --pretty=format:'%C(yellow)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative --graph
