@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Some commands output to both stdout and stderr throughout their execution and
+# it isn't clear which output is error. So this will prefix stdout lines with a
+# green "*" and stderr lines with a red "!".
+# Usage: highlight-errors <command> [args...]
+
+# Propagate the command's exit status through the sed pipelines, which
+# would otherwise mask it (sed almost always succeeds).
+set -o pipefail
+
+# Both the green and red sed needs its own stream to apply its own prefix, but
+# a pipe only carries stdout. fd 3 is a side channel: the command's stdout
+# escapes through fd 3 (caught by the outer sed); stderr is rerouted into the
+# inner pipe (caught by the inner sed).
+#
+# Order matters in `2>&1 1>&3`: redirections are evaluated left to
+# right and copy the *current* target. stderr first aims at the pipe
+# (current stdout), then stdout switches to fd 3. Swapping them would
+# send both streams to fd 3.
+(
+  # red stderr
+  "$@" 2>&1 1>&3 | sed $'s/^/\e[31m!\e[m /' 1>&2
+  # green stdout
+) 3>&1 | sed $'s/^/\e[32m*\e[m /'

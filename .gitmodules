@@ -1,3 +1,9 @@
 [submodule "modules/nvim/config"]
 	path = modules/nvim/config
 	url = git@github.com:nijotz/lazyvim-config.git
+[submodule "modules/scripts/mvln"]
+	path = modules/scripts/mvln
+	url = git@github.com:nijotz/mvln.git
+[submodule "modules/scripts/osc52-copy"]
+	path = modules/scripts/osc52-copy
+	url = git@github.com:nijotz/osc52-copy.git

@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+# Wait for a network device to respond.
+
+set -euo pipefail
+
+# Without this, bash sees `sleep` die from SIGINT but continues the loop.
+trap 'exit 130' INT
+
+DEFAULT_TIMEOUT=0
+timeout=$DEFAULT_TIMEOUT
+verbose=0
+
+usage() {
+  cat <<EOF
+usage: $0 [options] IP/HOSTNAME
+
+Wait for a network device to respond.
+
+OPTIONS:
+   -h      Help
+   -t      Timeout in seconds (0 for no timeout, default: $DEFAULT_TIMEOUT)
+   -v      Verbose
+EOF
+}
+
+log() {
+  [[ $verbose -ne 0 ]] && echo "$@"
+  return 0
+}
+
+while getopts "ht:v" opt; do
+  case $opt in
+  h)
+    usage
+    exit
+    ;;
+  t) timeout=$OPTARG ;;
+  v) verbose=1 ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+done
+
+shift "$((OPTIND - 1))"
+host=${1:-}
+
+if [[ -z $host ]]; then
+  echo "A host is required" >&2
+  usage
+  exit 1
+fi
+
+start=$(date +%s)
+first=1
+while true; do
+  if [[ $first -eq 0 ]]; then
+    sleep 1
+  fi
+  first=0
+
+  now=$(date +%s)
+  elapsed=$((now - start))
+
+  if [[ $timeout -ne 0 ]]; then
+    remaining=$((timeout - elapsed))
+  elif [[ $(locale charmap 2>/dev/null || echo) == "UTF-8" ]]; then
+    remaining=$'\xe2\x88\x9e'
+  else
+    remaining=Inf
+  fi
+
+  log "Elapsed time: $elapsed - Remaining time: $remaining"
+
+  if [[ $timeout -ne 0 && $remaining -lt 1 ]]; then
+    echo "Timed out." >&2
+    exit 1
+  fi
+
+  log "Pinging $host"
+
+  if ping -c 1 -W 1 "$host" >/dev/null 2>&1; then
+    break
+  fi
+done

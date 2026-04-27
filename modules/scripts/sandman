@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Make processes sleepy by cycling SIGSTOP / SIGCONT on a duty cycle.
+#
+# Originally written to throttle a maintenance task on a production PostgreSQL
+# server where ionice wasn't enough.
+
+set -euo pipefail
+
+pid=
+ratio=0.5
+span=5
+verbose=0
+
+usage() {
+    cat <<EOF
+usage: $0 options
+
+Make processes sleepy.
+
+OPTIONS:
+   -h      Help
+   -p      Process ID
+   -r      Ratio of sleep:awake (0-1, 1 being a coma)
+   -s      Seconds of a sleep cycle
+   -v      Verbose
+
+Make process 5678 sleep for 5 seconds out of every 10:
+$0 -p 5678 -r 0.5 -s 10 -v
+EOF
+}
+
+log() {
+    [[ $verbose -ne 0 ]] && echo "$@"
+}
+
+wake_and_exit() {
+    log "Waking $pid before quitting"
+    kill -CONT "$pid" 2>/dev/null || true
+    exit
+}
+
+while getopts "hp:r:s:v" opt; do
+    case $opt in
+        h) usage; exit ;;
+        p) pid=$OPTARG ;;
+        r) ratio=$OPTARG ;;
+        s) span=$OPTARG ;;
+        v) verbose=1 ;;
+        *) usage; exit 1 ;;
+    esac
+done
+
+if [[ -z $pid ]]; then
+    echo "A process ID is required" >&2
+    usage
+    exit 1
+fi
+
+sleep_span=$(awk -v s="$span" -v r="$ratio" 'BEGIN { print s * r }')
+wake_span=$(awk -v s="$span" -v sl="$sleep_span" 'BEGIN { print s - sl }')
+
+trap wake_and_exit INT TERM
+
+while true; do
+    log "Sleeping #$pid for $sleep_span seconds"
+    kill -STOP "$pid"
+    sleep "$sleep_span"
+
+    log "WAKE UP #$pid for $wake_span seconds"
+    kill -CONT "$pid"
+    sleep "$wake_span"
+done

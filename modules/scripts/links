@@ -1,0 +1,6 @@
+dogebark ~/.local/bin/dogebark
+ping-til-alive ~/.local/bin/ping-til-alive
+sandman ~/.local/bin/sandman
+highlight-errors ~/.local/bin/highlight-errors
+osc52-copy/osc52-copy ~/.local/bin/osc52-copy
+mvln/mvln ~/.local/bin/mvln
