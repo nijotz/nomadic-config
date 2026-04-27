@@ -8,6 +8,7 @@
     default = current
 [alias]
     aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
+    branches = "!{ echo \"---|---|---\"; git for-each-ref --format=\"%(refname:short)|%(ahead-behind:main)\" refs/heads/ | sed \"s/ /|/\"; } | column -t -s\"|\" -N \"branch,ahead,behind\""
     bs = "!{ echo \"---|---|---\"; git for-each-ref --format=\"%(refname:short)|%(ahead-behind:main)\" refs/heads/ | sed \"s/ /|/\"; } | column -t -s\"|\" -N \"branch,ahead,behind\""
     bl = branch --format=%(refname:short)
     ds  = diff --staged
