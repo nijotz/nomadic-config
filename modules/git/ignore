@@ -1,2 +1,4 @@
 .nvim.lua
 **/.claude/settings.local.json
+mutagen.yml
+mutagen.yml.lock
