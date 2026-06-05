@@ -2,6 +2,7 @@ gh
 glances
 jq
 mosh
+ncdu
 nmap
 pv
 python3
