@@ -1,1 +1,3 @@
+# homebrew needed for pathing
+after: homebrew
 pkg: golang
