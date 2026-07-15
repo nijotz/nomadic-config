@@ -2,6 +2,6 @@
 # Use cask: prefix for GUI apps installed via `brew install --cask`
 bash-completion=bash-completion@2
 python3=python
-iterm2=cask:iterm2
+ghostty=cask:ghostty
 scroll-reverser=cask:scroll-reverser
 alt-tab=cask:alt-tab
