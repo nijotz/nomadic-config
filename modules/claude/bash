@@ -1,0 +1,11 @@
+claude() {
+  if [ -n "$TMUX" ]; then
+    tmux rename-window claude
+    command claude "$@"
+    local ret=$?
+    tmux set-window-option automatic-rename on
+    return $ret
+  else
+    command claude "$@"
+  fi
+}
