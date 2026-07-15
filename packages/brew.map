@@ -5,3 +5,4 @@ python3=python
 ghostty=cask:ghostty
 scroll-reverser=cask:scroll-reverser
 bettercmdtab=cask:bettercmdtab
+golang=go
