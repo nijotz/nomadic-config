@@ -4,4 +4,4 @@ bash-completion=bash-completion@2
 python3=python
 ghostty=cask:ghostty
 scroll-reverser=cask:scroll-reverser
-alt-tab=cask:alt-tab
+bettercmdtab=cask:bettercmdtab
