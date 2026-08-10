@@ -10,3 +10,5 @@ background-blur = 20
 macos-option-as-alt = right
 
 scrollback-limit = 1000000
+
+mouse-scroll-multiplier = discrete:1
