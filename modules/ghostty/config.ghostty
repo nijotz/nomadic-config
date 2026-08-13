@@ -7,7 +7,7 @@ theme = iTerm2 Solarized Dark
 background-opacity = 0.96
 background-blur = 20
 
-macos-option-as-alt = right
+macos-option-as-alt = left
 
 scrollback-limit = 1000000
 
